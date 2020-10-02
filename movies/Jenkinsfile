@@ -6,17 +6,10 @@ pipeline {
     agent {
       node {
         //TODO: Add label for the Maven jenkins agent
-<<<<<<< HEAD
         label 'mavem'
-<<<<<<< HEAD
 
 
 //Changed
-=======
-=======
-        label 'maven'
->>>>>>> de5649062331a5456746a9ca64290df0a6d8e501
->>>>>>> c9f0ebaf3d389202d84ce49af40c907cd92a2390
       }
     }
 
@@ -94,14 +87,9 @@ pipeline {
                 }
                 // TODO: Create a new OpenShift application based on the ${APP_NAME}:latest image stream
                 sh '''
-<<<<<<< HEAD
                     oc new-app --as-deployment-config ${APP_NAME}:latest -n ${DEV_PROJECT}
                     oc expose svc/${APP_NAME} -n ${DEV_PROJECT}
 
-=======
-                    oc new-app ${APP_NAME}:latest -n ${DEV_PROJECT}
-                    oc expose svc/${APP_NAME} -n ${DEV_PROJECT}
->>>>>>> de5649062331a5456746a9ca64290df0a6d8e501
                 '''
                 // TODO: Expose the ${APP_NAME} service for external access
             }
@@ -113,7 +101,6 @@ pipeline {
                 script {
                     openshift.withCluster() {
                         openshift.withProject( "${DEV_PROJECT}" ) {
-<<<<<<< HEAD
                               openshift.selector("dc", "${APP_NAME}").related('pods').untilEach(1) {
                                    return (it.object().status.phase == "Running")
                    }
@@ -121,14 +108,6 @@ pipeline {
                     }
                    
                 }
-=======
-                            openshift.selector("dc", "${APP_NAME}").related('pods').untilEach(1) {
-                               return(it.object().status.phase == "Running")
-                 }
-                    }
-                 }
-                 }
->>>>>>> de5649062331a5456746a9ca64290df0a6d8e501
             }
         }
 
@@ -140,11 +119,7 @@ pipeline {
                 script {
                     openshift.withCluster() {
                     // TODO: Tag the ${APP_NAME}:latest image stream in the dev env as ${APP_NAME}:stage in staging
-<<<<<<< HEAD
                          openshift.tag("${DEV_PROJECT}/${APP_NAME}:latest",      "${STAGE_PROJECT}/  ${APP_NAME}:stage") 
-=======
-                         openshift.tag("$(DEV_PROJECT)/${APP_NAME}:latest", "${STAGE_PROJECT}/${APP_NAME}:stage")
->>>>>>> de5649062331a5456746a9ca64290df0a6d8e501
                     }
                 }
             }
@@ -163,11 +138,7 @@ pipeline {
                 // TODO: Create a new app in staging and expose the service
                 sh '''
                     oc project ${STAGE_PROJECT}
-<<<<<<< HEAD
                     oc new-app --as-deployment-config --name ${APP_NAME} -i ${APP_NAME}:stage
-=======
-                    oc new-app --name ${APP_NAME} -i ${APP_NAME}:stage
->>>>>>> de5649062331a5456746a9ca64290df0a6d8e501
                     oc expose svc/${APP_NAME}
                 '''
             }
